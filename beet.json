@@ -1,0 +1,13 @@
+{
+    "name": "goob",
+    "description": "goob.",
+    "author": "Trplnr, Tushka",
+    "minecraft": "1.21.11",
+    "resource_pack": {
+        "load": ["./src"],
+        "min_format": [75, 0],
+        "max_format": [75, 0],
+        "zipped": true
+    },
+    "output": "./build"
+}
