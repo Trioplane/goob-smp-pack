@@ -1,0 +1,120 @@
+class ResourceLocation:
+    def __init__(self, resource_location):
+        split = resource_location.split(":")
+
+        # todo: change to regex in the future
+        if len(split) > 2:
+            raise SyntaxError("Invalid syntax")
+
+        self.namespace = split[0]
+        self.path = split[1]
+        self.full = resource_location
+
+class CustomPainting:
+    def __init__(self, resource_location, asset_id, width, height, title, author, recipe_item):
+        self.resource_location = ResourceLocation(resource_location)
+        self.asset_id = asset_id
+        self.width = width
+        self.height = height
+        self.title = {"text": title, "color": "light_purple"}
+        self.author = {"text": author, "color": "gray"}
+        self.recipe_item = recipe_item
+
+        print(f"Building custom painting {self.resource_location.full}")
+
+        painting_variant f"{self.resource_location.full}" {
+            "asset_id": self.asset_id,
+            "width": self.width,
+            "height": self.height,
+            "title": self.title,
+            "author": self.author
+        }
+
+        recipe f"{self.resource_location.namespace}:painting/{self.resource_location.path}" {
+            "type": "minecraft:crafting_shapeless",
+            "category": "building",
+            "group": "custom_painting",
+            "ingredients": [
+                "minecraft:painting",
+                "minecraft:brush",
+                self.recipe_item
+            ],
+            "result": {
+                "id": "painting",
+                "count": 1,
+                "components": {
+                    "minecraft:painting/variant": self.resource_location.full
+                }
+            }
+        }
+
+
+CustomPainting(
+    resource_location = "goob:tushka",
+    asset_id = "goob:tushka",
+    width = 2,
+    height = 2,
+    title = "Tushka",
+    author = "Mini Padar & Trplnr",
+    recipe_item = "minecraft:light_blue_dye"
+)
+
+CustomPainting(
+    resource_location = "goob:trplnr",
+    asset_id = "goob:trplnr",
+    width = 2,
+    height = 2,
+    title = "Trplnr",
+    author = "Mini Padar & Trplnr",
+    recipe_item = "minecraft:purple_bed"
+)
+
+CustomPainting(
+    resource_location = "goob:3255",
+    asset_id = "goob:3255",
+    width = 2,
+    height = 2,
+    title = "3255ms",
+    author = "Mini Padar & Trplnr",
+    recipe_item = "minecraft:pufferfish"
+)
+
+CustomPainting(
+    resource_location = "goob:joellizzy",
+    asset_id = "goob:joellizzy",
+    width = 2,
+    height = 2,
+    title = "Joellizzy",
+    author = "Mini Padar & Trplnr",
+    recipe_item = "minecraft:egg"
+)
+
+CustomPainting(
+    resource_location = "goob:borb",
+    asset_id = "goob:borb",
+    width = 3,
+    height = 3,
+    title = "Borb",
+    author = "Mojang Artists & Trplnr",
+    recipe_item = "minecraft:blue_egg"
+)
+
+CustomPainting(
+    resource_location = "goob:salmon_spin",
+    asset_id = "goob:salmon_spin",
+    width = 3,
+    height = 3,
+    title = "Salmon Spin",
+    author = "Mojang Artists & Trplnr",
+    recipe_item = "minecraft:salmon"
+)
+
+CustomPainting(
+    resource_location = "goob:cod_spin",
+    asset_id = "goob:cod_spin",
+    width = 3,
+    height = 3,
+    title = "Cod Spin",
+    author = "Mojang Artists & Trplnr",
+    recipe_item = "minecraft:cod"
+)

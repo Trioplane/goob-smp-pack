@@ -1,7 +1,7 @@
 {
     "name": "goob",
     "description": "goob.",
-    "author": "Trplnr, Tushka",
+    "author": "Trplnr",
     "minecraft": "1.21.11",
     "resource_pack": {
         "load": ["./src"],
@@ -10,8 +10,13 @@
     },
     "data_pack": {
         "load": ["./src"],
-        "min_format": [94,0],
-        "max_format": [94,0]
+        "min_format": [94, 0],
+        "max_format": [94, 0]
+    },
+    "require": ["bolt"],
+    "pipeline": ["mecha"],
+    "meta": {
+        "bolt": { "entrypoint": "goob:*" }
     },
     "output": "./build"
 }

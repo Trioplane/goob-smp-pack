@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "custom_painting",
+  "ingredients": [
+    "minecraft:painting",
+    "minecraft:brush",
+    "minecraft:light_blue_dye"
+  ],
+  "result": {
+    "id": "painting",
+    "count": 1,
+    "components": {
+      "minecraft:painting/variant": "goob:tushka"
+    }
+  }
+}
