@@ -1,0 +1,14 @@
+{
+    "entity.minecraft.chicken": "Borb",
+    "item.minecraft.blue_egg": "Borb Egg",
+    "item.minecraft.chicken": "Raw Borb",
+    "item.minecraft.chicken_spawn_egg": "Borb Spawn Egg",
+    "item.minecraft.cooked_chicken": "Cooked Borb",
+    "item.minecraft.music_disc_lava_chicken": "Music Disc",
+    "item.minecraft.music_disc_lava_chicken.desc": "Hyper Potions - Lava Borb",
+    "jukebox_song.minecraft.lava_chicken": "Hyper Potions - Lava Borb",
+    "subtitles.entity.chicken.ambient": "Borb clucks",
+    "subtitles.entity.chicken.death": "Borb dies",
+    "subtitles.entity.chicken.egg": "Borb plops",
+    "subtitles.entity.chicken.hurt": "Borb hurts"
+}   

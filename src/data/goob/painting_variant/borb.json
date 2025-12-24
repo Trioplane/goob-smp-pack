@@ -1,0 +1,7 @@
+{
+    "asset_id": "goob:borb",
+    "width": 3,
+    "height": 3,
+    "title": {"text":"Borb", "color":"yellow"},
+    "author": {"text":"Mojang Artists & Trplnr", "color":"gray"}
+}
