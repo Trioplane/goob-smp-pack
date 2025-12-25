@@ -14,7 +14,10 @@
         "max_format": [94, 0]
     },
     "require": ["bolt"],
-    "pipeline": ["mecha"],
+    "pipeline": [
+        "mecha",
+        "plugins.output_zip"
+    ],
     "meta": {
         "bolt": { "entrypoint": "goob:*" }
     },
