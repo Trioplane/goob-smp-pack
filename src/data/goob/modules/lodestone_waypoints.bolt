@@ -1,0 +1,52 @@
+advancement ~/use_lodestone {
+    "criteria": {
+        "use_lodestone": {
+            "conditions": {
+                "location": [
+                    {
+                        "condition": "minecraft:location_check",
+                        "predicate": {
+                            "block": {
+                                "blocks": "minecraft:lodestone"
+                            }
+                        }
+                    },
+                    {
+                        "condition": "minecraft:match_tool",
+                        "predicate": {
+                            "items": "minecraft:compass"
+                        }
+                    }
+                ]
+            },
+            "trigger": "minecraft:item_used_on_block"
+        }
+    },
+    "rewards": {
+        "function": "goob:lodestone_waypoints/use_lodestone"
+    }
+}
+
+function ~/init:
+    scoreboard objectives add goob.lodestone_waypoints.raycast_steps dummy
+
+function ~/use_lodestone:
+    advancement revoke @s only goob:lodestone_waypoints/use_lodestone
+
+    scoreboard players reset @s goob.lodestone_waypoints.raycast_steps
+    execute at @s anchored eyes run function ~/../find_lodestone
+
+function ~/find_lodestone:
+    execute 
+        if block ~ ~ ~ minecraft:lodestone 
+        align xyz 
+        positioned ~0.5 ~0.5 ~0.5 run return run function ~/../make_waypoint
+
+    execute if score @s goob.lodestone_waypoints.raycast_steps matches 50..
+        run return run tellraw @s {text:"Couldn't find a lodestone mate.", color: "red"}
+
+    scoreboard players add @s goob.lodestone_waypoints.raycast_steps 1
+    execute positioned ^ ^ ^0.2 run function ~/../find_lodestone
+
+function ~/make_waypoint:
+    particle minecraft:block_marker{block_state:"gold_block"}

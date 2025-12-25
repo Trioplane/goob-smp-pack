@@ -1,0 +1,1 @@
+scoreboard objectives add goob.lodestone_waypoints.raycast_steps dummy

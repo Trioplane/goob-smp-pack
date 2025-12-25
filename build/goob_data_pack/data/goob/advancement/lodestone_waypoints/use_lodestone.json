@@ -1,0 +1,28 @@
+{
+  "criteria": {
+    "use_lodestone": {
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": "minecraft:lodestone"
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": "minecraft:compass"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:item_used_on_block"
+    }
+  },
+  "rewards": {
+    "function": "goob:lodestone_waypoints/use_lodestone"
+  }
+}

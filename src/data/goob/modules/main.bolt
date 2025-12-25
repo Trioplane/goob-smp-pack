@@ -1,0 +1,11 @@
+function ~/load:    
+    function goob:lodestone_waypoints/init
+
+    tellraw @a {text:"goob.",color:"gray"}
+
+append function_tag minecraft:load {
+    "replace": false,
+    "values": [
+        "goob:main/load"
+    ]
+}
