@@ -10,5 +10,21 @@
     "subtitles.entity.chicken.ambient": "Borb clucks",
     "subtitles.entity.chicken.death": "Borb dies",
     "subtitles.entity.chicken.egg": "Borb plops",
-    "subtitles.entity.chicken.hurt": "Borb hurts"
+    "subtitles.entity.chicken.hurt": "Borb hurts",
+    "entity.minecraft.salmon": "Feesh",
+    "item.minecraft.cooked_salmon": "Cooked Feesh",
+    "item.minecraft.salmon": "Raw Feesh",
+    "item.minecraft.salmon_bucket": "Bucket of Feesh",
+    "item.minecraft.salmon_spawn_egg": "Feesh Spawn Egg",
+    "subtitles.entity.salmon.death": "Feesh dies",
+    "subtitles.entity.salmon.flop": "Feesh flops",
+    "subtitles.entity.salmon.hurt": "Feesh hurts",
+    "entity.minecraft.cod": "Fisch",
+    "item.minecraft.cod": "Raw Fisch",
+    "item.minecraft.cod_bucket": "Bucket of Fisch",
+    "item.minecraft.cod_spawn_egg": "Fisch Spawn Egg",
+    "item.minecraft.cooked_cod": "Cooked Fisch",
+    "subtitles.entity.cod.death": "Fisch dies",
+    "subtitles.entity.cod.flop": "Fisch flops",
+    "subtitles.entity.cod.hurt": "Fisch hurts"
 }   
