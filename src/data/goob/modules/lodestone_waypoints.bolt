@@ -59,6 +59,8 @@ function ~/init:
         {namespace: "goob", path: "joellizzy", full: "goob:joellizzy"},
         {namespace: "goob", path: "hobbit_hole", full: "goob:hobbit_hole"},
         {namespace: "goob", path: "borb_base", full: "goob:borb_base"},
+        {namespace: "goob", path: "nether_portal", full: "goob:nether_portal"},
+        {namespace: "goob", path: "end_portal", full: "goob:end_portal"},
     ]
 
     function ~/../generate_dialog
@@ -146,7 +148,7 @@ function ~/make_waypoint:
         run return fail
 
     execute
-        if entity @n[type=interaction,tag=goob.lodestone_waypoints.interaction,distance=..1]
+        if entity @n[type=interaction,tag=goob.lodestone_waypoints.interaction,distance=..0.9]
         run return 
         run tellraw @s [{text:"[goob.] There's already a waypoint here!", color: "gray"}]
 
@@ -165,8 +167,8 @@ function ~/make_waypoint:
             ],
             attributes: [{id: "waypoint_transmit_range", base: 100}]
         }],
-        width: 1.05,
-        height: 1.05,
+        width: 1.02,
+        height: 1.02,
         response: true
     }
 
