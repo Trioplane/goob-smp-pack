@@ -1,7 +1,13 @@
 function ~/load:    
+    scoreboard objectives add goob.id dummy
+
     function goob:lodestone_waypoints/init
 
     tellraw @a {text:"goob.",color:"gray"}
+
+function ~/assign_id:
+    scoreboard players operation @s goob.id = .next goob.id
+    scoreboard players add .next goob.id 1
 
 append function_tag minecraft:load {
     "replace": false,

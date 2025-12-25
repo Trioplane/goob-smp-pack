@@ -1,0 +1,2 @@
+execute unless function goob:lodestone_waypoints/check_if_valid_position run return run function goob:lodestone_waypoints/remove_waypoint
+function goob:lodestone_waypoints/listen_for_interactions

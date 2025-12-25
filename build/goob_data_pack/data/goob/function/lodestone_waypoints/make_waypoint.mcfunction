@@ -1,1 +1,4 @@
-particle minecraft:block_marker{block_state: "gold_block"}
+execute unless block ~ ~-1 ~ #goob:lodestone_waypoints/waypoint_blocks run return fail
+execute if entity @n[type=interaction, tag=goob.lodestone_waypoints.interaction, distance=..1] run return run tellraw @s [{text: "[goob.] There's already a waypoint here!", color: "gray"}]
+summon interaction ~ ~ ~ {Tags: ["goob.lodestone_waypoints.interaction", "goob.lodestone_waypoints.interaction.new"], Passengers: [{id: "armor_stand", Marker: true, Invisible: true, Invulnerable: true, Tags: ["goob.lodestone_waypoints.armor_stand"], attributes: [{id: "waypoint_transmit_range", base: 100}]}], width: 1.05d, height: 1.05d, response: true}
+execute as @n[type=interaction, tag=goob.lodestone_waypoints.interaction.new, distance=..30] run function goob:lodestone_waypoints/make_waypoint/initialize_interaction

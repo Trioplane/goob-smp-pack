@@ -1,1 +1,8 @@
 scoreboard objectives add goob.lodestone_waypoints.raycast_steps dummy
+scoreboard objectives add goob.lodestone_waypoints.targeted_waypoint dummy
+scoreboard objectives add goob.lodestone_waypoints.cancel_edit trigger
+scoreboard objectives add goob.lodestone_waypoints.edit_icon trigger
+scoreboard objectives add goob.lodestone_waypoints.math trigger
+data modify storage goob:lodestone_waypoints icons set value [{namespace: "minecraft", path: "default_0", full: "minecraft:default_0"}, {namespace: "minecraft", path: "default_1", full: "minecraft:default_1"}, {namespace: "minecraft", path: "default_2", full: "minecraft:default_2"}, {namespace: "minecraft", path: "default_3", full: "minecraft:default_3"}, {namespace: "minecraft", path: "bowtie", full: "minecraft:bowtie"}, {namespace: "goob", path: "tushka", full: "goob:tushka"}, {namespace: "goob", path: "trplnr", full: "goob:trplnr"}, {namespace: "goob", path: "3255", full: "goob:3255"}, {namespace: "goob", path: "joellizzy", full: "goob:joellizzy"}, {namespace: "goob", path: "hobbit_hole", full: "goob:hobbit_hole"}, {namespace: "goob", path: "borb_base", full: "goob:borb_base"}]
+function goob:lodestone_waypoints/generate_dialog
+schedule function goob:lodestone_waypoints/loop 4 replace

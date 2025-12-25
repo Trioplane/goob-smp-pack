@@ -27,8 +27,100 @@ advancement ~/use_lodestone {
     }
 }
 
+block_tag ~/waypoint_blocks {
+    "values": [
+        "copper_bulb",
+        "exposed_copper_bulb",
+        "weathered_copper_bulb",
+        "oxidized_copper_bulb",
+        "waxed_copper_bulb",
+        "waxed_exposed_copper_bulb",
+        "waxed_weathered_copper_bulb",
+        "waxed_oxidized_copper_bulb"
+    ]
+}
+
 function ~/init:
     scoreboard objectives add goob.lodestone_waypoints.raycast_steps dummy
+    scoreboard objectives add goob.lodestone_waypoints.targeted_waypoint dummy
+    scoreboard objectives add goob.lodestone_waypoints.cancel_edit trigger
+    scoreboard objectives add goob.lodestone_waypoints.edit_icon trigger
+    scoreboard objectives add goob.lodestone_waypoints.math trigger
+
+    data modify storage goob:lodestone_waypoints icons set value [
+        {namespace: "minecraft", path: "default_0", full: "minecraft:default_0"},
+        {namespace: "minecraft", path: "default_1", full: "minecraft:default_1"},
+        {namespace: "minecraft", path: "default_2", full: "minecraft:default_2"},
+        {namespace: "minecraft", path: "default_3", full: "minecraft:default_3"},
+        {namespace: "minecraft", path: "bowtie", full: "minecraft:bowtie"},
+        {namespace: "goob", path: "tushka", full: "goob:tushka"},
+        {namespace: "goob", path: "trplnr", full: "goob:trplnr"},
+        {namespace: "goob", path: "3255", full: "goob:3255"},
+        {namespace: "goob", path: "joellizzy", full: "goob:joellizzy"},
+        {namespace: "goob", path: "hobbit_hole", full: "goob:hobbit_hole"},
+        {namespace: "goob", path: "borb_base", full: "goob:borb_base"},
+    ]
+
+    function ~/../generate_dialog
+
+    schedule function ~/../loop 4t replace
+
+function ~/generate_dialog:
+    # {atlas:"gui",sprite:"goob:hud/locator_bar_dot/trplnr"}
+    data modify storage goob:lodestone_waypoints edit.dialog set value {
+        "type": "minecraft:multi_action",
+        "title": "Editing Waypoint",
+        "body": [
+            {
+                "type": "minecraft:plain_message",
+                "contents": {
+                    "text": "Select an icon",
+                    "color": "yellow"
+                }
+            }
+        ],
+        "pause": false,
+        "actions": [],
+        "columns": 4,
+        "exit_action": {
+            "label": "Cancel Edit",
+            "action": {
+                "type": "minecraft:run_command",
+                "command": "trigger goob.lodestone_waypoints.cancel_edit"
+            }
+        }
+    }
+
+    data modify storage goob:lodestone_waypoints edit.icons set from storage goob:lodestone_waypoints icons
+
+    scoreboard players set .index goob.lodestone_waypoints.math 0
+    execute function ~/append_icons:
+        data modify storage goob:lodestone_waypoints edit.button set value {
+            "label": [
+                {"atlas":"gui","sprite":"goob:hud/locator_bar_dot/trplnr"},
+                {"text": " "},
+                {"text": "", color: "gray"}
+            ],
+            "width": 100,
+            "action": {
+                "type": "minecraft:run_command",
+                "command": ""
+            }
+        }
+
+        execute function ~/set_sprite with storage goob:lodestone_waypoints edit.icons[0]:
+            $data modify storage goob:lodestone_waypoints edit.button.label[0].sprite set value "$(namespace):hud/locator_bar_dot/$(path)"
+
+        data modify storage goob:lodestone_waypoints edit.button.label[2].text set from storage goob:lodestone_waypoints edit.icons[0].full
+        execute store result storage goob:lodestone_waypoints edit.index int 1 run scoreboard players get .index goob.lodestone_waypoints.math
+        execute function ~/set_trigger_command with storage goob:lodestone_waypoints edit:
+            $data modify storage goob:lodestone_waypoints edit.button.action.command set value "trigger goob.lodestone_waypoints.edit_icon set $(index)"
+
+        data modify storage goob:lodestone_waypoints edit.dialog.actions append from storage goob:lodestone_waypoints edit.button
+
+        scoreboard players add .index goob.lodestone_waypoints.math 1
+        data remove storage goob:lodestone_waypoints edit.icons[0]
+        execute if data storage goob:lodestone_waypoints edit.icons[0] run function ~/../append_icons
 
 function ~/use_lodestone:
     advancement revoke @s only goob:lodestone_waypoints/use_lodestone
@@ -40,13 +132,122 @@ function ~/find_lodestone:
     execute 
         if block ~ ~ ~ minecraft:lodestone 
         align xyz 
-        positioned ~0.5 ~0.5 ~0.5 run return run function ~/../make_waypoint
+        positioned ~0.5 ~ ~0.5 run return run function ~/../make_waypoint
 
     execute if score @s goob.lodestone_waypoints.raycast_steps matches 50..
-        run return run tellraw @s {text:"Couldn't find a lodestone mate.", color: "red"}
+        run return fail
 
     scoreboard players add @s goob.lodestone_waypoints.raycast_steps 1
     execute positioned ^ ^ ^0.2 run function ~/../find_lodestone
 
 function ~/make_waypoint:
-    particle minecraft:block_marker{block_state:"gold_block"}
+    execute
+        unless block ~ ~-1 ~ #goob:lodestone_waypoints/waypoint_blocks
+        run return fail
+
+    execute
+        if entity @n[type=interaction,tag=goob.lodestone_waypoints.interaction,distance=..1]
+        run return 
+        run tellraw @s [{text:"[goob.] There's already a waypoint here!", color: "gray"}]
+
+    summon interaction ~ ~ ~ {
+        Tags: [
+            "goob.lodestone_waypoints.interaction",
+            "goob.lodestone_waypoints.interaction.new"
+        ],
+        Passengers: [{
+            id: "armor_stand",
+            Marker: true,
+            Invisible: true,
+            Invulnerable: true,
+            Tags: [
+                "goob.lodestone_waypoints.armor_stand"
+            ],
+            attributes: [{id: "waypoint_transmit_range", base: 100}]
+        }],
+        width: 1.05,
+        height: 1.05,
+        response: true
+    }
+
+    execute as @n[type=interaction,tag=goob.lodestone_waypoints.interaction.new,distance=..30] run function ~/initialize_interaction:
+        function goob:main/assign_id
+        execute on passengers run scoreboard players operation @s goob.id = @n[type=interaction,tag=goob.lodestone_waypoints.interaction.new] goob.id
+        particle glow ~ ~ ~ 0.3 0.3 0.3 0.05 10
+        tag @s remove goob.lodestone_waypoints.interaction.new
+
+function ~/listen_for_interactions:
+    tag @s add goob.lodestone_waypoints.interaction.current
+    execute on target run function ~/../open_editor
+    tag @s remove goob.lodestone_waypoints.interaction.current
+
+function ~/open_editor:
+    scoreboard players operation @s goob.lodestone_waypoints.targeted_waypoint = @n[type=interaction,tag=goob.lodestone_waypoints.interaction.current] goob.id
+
+    scoreboard players enable @s goob.lodestone_waypoints.cancel_edit
+    scoreboard players enable @s goob.lodestone_waypoints.edit_icon
+    scoreboard players set @s goob.lodestone_waypoints.edit_icon -1
+
+    tellraw @s {text:"[goob.] Editing waypoint", color:"gray"}
+    function ~/../show_dialog with storage goob:lodestone_waypoints edit
+
+    data remove entity @n[type=interaction,tag=goob.lodestone_waypoints.interaction.current] interaction
+
+function ~/edit_waypoint:
+    execute if score @s goob.lodestone_waypoints.cancel_edit matches 1.. run return run function ~/cancel:
+        scoreboard players reset @s goob.lodestone_waypoints.targeted_waypoint
+        scoreboard players reset @s goob.lodestone_waypoints.cancel_edit
+        scoreboard players reset @s goob.lodestone_waypoints.edit_icon
+        tellraw @s {text:"[goob.] Canceled edit", color:"gray"}
+
+    execute if score @s goob.lodestone_waypoints.edit_icon matches 0.. run return run function ~/edit_icon:
+        execute store result storage goob:lodestone_waypoints edit.selected_icon.index int 1 
+            run scoreboard players get @s goob.lodestone_waypoints.edit_icon
+        
+        execute function ~/get_icon_from_index with storage goob:lodestone_waypoints edit.selected_icon:
+            $data modify storage goob:lodestone_waypoints edit.selected_icon.resource_location set from storage goob:lodestone_waypoints icons[$(index)]
+        
+        tag @s add goob.lodestone_waypoints.player.current
+
+        execute
+            as @e[type=interaction,tag=goob.lodestone_waypoints.interaction]
+            if score @s goob.id = @p[tag=goob.lodestone_waypoints.player.current] goob.lodestone_waypoints.targeted_waypoint:
+                tag @s add goob.lodestone_waypoints.interaction.selected
+
+        execute 
+            as @n[type=interaction,tag=goob.lodestone_waypoints.interaction.selected] 
+            on passengers run waypoint modify @s color white
+        execute function ~/set_icon with storage goob:lodestone_waypoints edit.selected_icon.resource_location:
+            $execute as @n[type=interaction,tag=goob.lodestone_waypoints.interaction.selected] on passengers run waypoint modify @s style set $(full)
+
+        scoreboard players reset @s goob.lodestone_waypoints.targeted_waypoint
+        scoreboard players reset @s goob.lodestone_waypoints.cancel_edit
+        scoreboard players reset @s goob.lodestone_waypoints.edit_icon
+
+        tellraw @s {text:"[goob.] Edited waypoint icon", color:"gray"}
+
+        tag @n[type=interaction,tag=goob.lodestone_waypoints.interaction.selected] remove goob.lodestone_waypoints.interaction.selected
+        tag @s remove goob.lodestone_waypoints.player.current
+
+function ~/show_dialog:
+    $dialog show @s $(dialog)
+
+function ~/remove_waypoint:
+    execute on passengers run kill @s
+    kill @s
+    particle minecraft:dust{color:[1,0,0],scale:2} ~ ~ ~ 0.3 0.3 0.3 0.05 10
+
+function ~/check_if_valid_position:
+    execute unless block ~ ~-1 ~ #goob:lodestone_waypoints/waypoint_blocks run return fail
+    execute unless block ~ ~ ~ lodestone run return fail
+    return 1
+
+function ~/loop:
+    # runs every 4 ticks
+    execute as @e[type=interaction,tag=goob.lodestone_waypoints.interaction] at @s:
+        execute unless function ~/../check_if_valid_position run return run function ~/../remove_waypoint
+        function ~/../listen_for_interactions
+
+    execute as @a if score @s goob.lodestone_waypoints.targeted_waypoint matches 0.. run function ~/../edit_waypoint
+
+    schedule function ~/../loop 4t replace
