@@ -61,6 +61,10 @@ function ~/init:
         {namespace: "goob", path: "borb_base", full: "goob:borb_base"},
         {namespace: "goob", path: "nether_portal", full: "goob:nether_portal"},
         {namespace: "goob", path: "end_portal", full: "goob:end_portal"},
+        {namespace: "goob", path: "end_gateway", full: "goob:end_gateway"},
+        {namespace: "goob", path: "nether_fortress", full: "goob:nether_fortress"},
+        {namespace: "goob", path: "bastion", full: "goob:bastion"},
+        {namespace: "goob", path: "village", full: "goob:village"},
     ]
 
     function ~/../generate_dialog
@@ -165,7 +169,7 @@ function ~/make_waypoint:
             Tags: [
                 "goob.lodestone_waypoints.armor_stand"
             ],
-            attributes: [{id: "waypoint_transmit_range", base: 100}]
+            attributes: [{id: "waypoint_transmit_range", base: 1000}]
         }],
         width: 1.02,
         height: 1.02,
