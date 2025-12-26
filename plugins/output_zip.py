@@ -33,21 +33,21 @@ def output(ctx: Context, opts: OutputOptions):
     if ctx.project_version == "":
         name = ctx.project_id
 
-    zipped_resource_pack = ctx.data.save(
-        path= output_path / f"{name}_data_pack.zip",
+    ctx.data.save(
+        path = output_path / f"{name}_data_pack.zip",
         overwrite=True,
     )
-    ctx.assets.save(
-        path= output_path / f"{name}_resource_pack.zip",
+    zipped_resource_pack = ctx.assets.save(
+        path = output_path / f"{name}_resource_pack.zip",
         overwrite=True,
     )
 
     ctx.data.save(
-        path= output_path / f"{name}_data_pack",
+        path = output_path / f"{name}_data_pack",
         overwrite=True,
     )
     ctx.assets.save(
-        path= output_path / f"{name}_resource_pack",
+        path = output_path / f"{name}_resource_pack",
         overwrite=True,
     )
 
