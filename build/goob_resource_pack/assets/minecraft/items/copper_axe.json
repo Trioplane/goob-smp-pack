@@ -1,0 +1,41 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:component",
+    "component": "minecraft:custom_name",
+    "cases": [
+      {
+        "when": "Screwdriver",
+        "model": {
+          "type": "minecraft:model",
+          "model": "goob:item/tools/screwdriver"
+        }
+      },
+      {
+        "when": "Hammer",
+        "model": {
+          "type": "minecraft:model",
+          "model": "goob:item/tools/hammer"
+        }
+      },
+      {
+        "when": "Wrench",
+        "model": {
+          "type": "minecraft:model",
+          "model": "goob:item/tools/wrench"
+        }
+      },
+      {
+        "when": "Drill",
+        "model": {
+          "type": "minecraft:model",
+          "model": "goob:item/tools/drill"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/copper_axe"
+    }
+  }
+}

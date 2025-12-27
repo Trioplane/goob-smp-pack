@@ -1,0 +1,65 @@
+tiers = ["wooden","stone","copper","iron","golden","diamond","netherite"]
+gear = ["sword","pickaxe","axe","shovel","hoe"]
+tiered_gear = []
+spears = []
+
+for tier in tiers:
+    for _gear in gear:
+        tiered_gear.append(f"{tier}_{_gear}")
+        spears.append(f"{tier}_spear")
+
+tiered_gear.append("mace")
+
+for tg in tiered_gear:
+    item_model f"{tg}" {
+      "model": {
+        "type": "minecraft:select",
+        "property": "minecraft:component",
+        "component": "minecraft:custom_name",
+        "cases": [
+            { "when": "Screwdriver", "model": { "type": "minecraft:model", "model": "goob:item/tools/screwdriver" } },
+            { "when": "Hammer", "model": { "type": "minecraft:model", "model": "goob:item/tools/hammer" } },
+            { "when": "Wrench", "model": { "type": "minecraft:model", "model": "goob:item/tools/wrench" } },
+            { "when": "Drill", "model": { "type": "minecraft:model", "model": "goob:item/tools/drill" } }
+        ],
+        "fallback": {
+            "type": "minecraft:model",
+            "model": f"minecraft:item/{tg}"
+        }
+      }
+    }
+
+for spear in spears:
+    item_model f"{spear}" {
+        "model": {
+            "type": "minecraft:select",
+            "property": "minecraft:component",
+            "component": "minecraft:custom_name",
+            "cases": [
+              { "when": "Screwdriver", "model": { "type": "minecraft:model", "model": "goob:item/tools/screwdriver" } },
+              { "when": "Hammer", "model": { "type": "minecraft:model", "model": "goob:item/tools/hammer" } },
+              { "when": "Wrench", "model": { "type": "minecraft:model", "model": "goob:item/tools/wrench" } },
+              { "when": "Drill", "model": { "type": "minecraft:model", "model": "goob:item/tools/drill" } }
+            ],
+            "fallback": {
+                "type": "minecraft:select",
+                "cases": [
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": f"minecraft:item/{spear}"
+                    },
+                    "when": ["gui", "ground", "fixed", "on_shelf"]
+                  }
+                ],
+                "fallback": {
+                  "type": "minecraft:model",
+                  "model": f"minecraft:item/{spear}_in_hand"
+                },
+                "property": "minecraft:display_context"
+            }
+        },
+        "swap_animation_scale": 1.95
+    }
+
+    
