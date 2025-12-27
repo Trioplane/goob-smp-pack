@@ -1,0 +1,74 @@
+{
+  "description": {
+    "translate": "goob.enchantments.vein_mine",
+    "color": "light_purple"
+  },
+  "exclusive_set": "minecraft:fortune",
+  "supported_items": "#goob:enchantments/definitions/vein_mine/enchantable",
+  "primary_items": "#goob:enchantments/definitions/vein_mine/enchantable",
+  "weight": 1,
+  "max_level": 1,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 4
+  },
+  "max_cost": {
+    "base": 30,
+    "per_level_above_first": 4
+  },
+  "anvil_cost": 8,
+  "slots": [
+    "mainhand"
+  ],
+  "effects": {
+    "minecraft:hit_block": [
+      {
+        "effect": {
+          "type": "minecraft:all_of",
+          "effects": [
+            {
+              "type": "minecraft:run_function",
+              "function": "goob:enchantments/definitions/vein_mine/summon_break_detector"
+            }
+          ]
+        },
+        "requirements": {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "flags": {
+                  "is_sneaking": true
+                }
+              }
+            },
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "type_specific": {
+                  "type": "minecraft:player",
+                  "food": {
+                    "level": {
+                      "min": 6
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "condition": "minecraft:location_check",
+              "predicate": {
+                "block": {
+                  "blocks": "#goob:enchantments/definitions/vein_mine/mineable"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

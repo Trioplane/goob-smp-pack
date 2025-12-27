@@ -1,0 +1,241 @@
+append block_tag ~/group {
+    "replace": false,
+    "values": [
+        "#logs",
+        "#leaves",
+        "nether_wart_block",
+        "warped_wart_block",
+        "#coal_ores",
+        "#copper_ores",
+        "#iron_ores",
+        "#gold_ores",
+        "#lapis_ores",
+        "#diamond_ores",
+        "#emerald_ores",
+        "#redstone_ores",
+        "nether_quartz_ore",
+        "raw_copper_block",
+        "raw_iron_block",
+        "raw_gold_block",
+        "ancient_debris",
+        "amethyst_block"
+    ]
+}
+append block_tag ~/mineable {
+    "replace": false,
+    "values": [
+        "#logs",
+        "#coal_ores",
+        "#copper_ores",
+        "#iron_ores",
+        "#gold_ores",
+        "#lapis_ores",
+        "#diamond_ores",
+        "#emerald_ores",
+        "#redstone_ores",
+        "nether_quartz_ore",
+        "raw_copper_block",
+        "raw_iron_block",
+        "raw_gold_block",
+        "ancient_debris",
+        "amethyst_block"
+    ]
+}
+
+
+
+item_tag ~/enchantable {
+    "values": [
+        "#axes",
+        "#pickaxes"
+    ]
+}
+
+enchantment ~/ {
+    "description": {
+        "translate": "goob.enchantments.vein_mine",
+        "color": "light_purple"
+    },
+    "exclusive_set": "minecraft:fortune",
+    "supported_items": "#goob:enchantments/definitions/vein_mine/enchantable",
+    "primary_items": "#goob:enchantments/definitions/vein_mine/enchantable",
+    "weight": 1,
+    "max_level": 1,
+    "min_cost": {
+        "base": 10,
+        "per_level_above_first": 4
+    },
+    "max_cost": {
+        "base": 30,
+        "per_level_above_first": 4
+    },
+    "anvil_cost": 8,
+    "slots": ["mainhand"],
+    "effects": {
+        "minecraft:hit_block": [{
+            "effect": {
+                "type": "minecraft:all_of",
+                "effects": [
+                    {
+                        "type": "minecraft:run_function",
+                        "function": "goob:enchantments/definitions/vein_mine/summon_break_detector"
+                    }
+                ]
+            },
+            "requirements": {
+                "condition": "minecraft:all_of",
+                "terms": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "flags": {
+                                "is_sneaking": true
+                            }
+                        }
+                    },
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type_specific": {
+                                "type": "minecraft:player",
+                                "food": {
+                                    "level": {
+                                        "min": 6
+                                    }
+                                }
+                            },
+                        }
+                    },
+                    {
+                        "condition": "minecraft:location_check",
+                        "predicate": {
+                            "block": {
+                                "blocks": "#goob:enchantments/definitions/vein_mine/mineable"
+                            }
+                        }
+                    }
+                ]
+            }
+        }]
+    }
+}
+
+function ~/init:
+    scoreboard objectives add goob.enchantments.definitions.vein_mine.age dummy
+    scoreboard objectives add goob.enchantments.definitions.vein_mine.depth dummy
+
+function ~/listen_for_break_loop:
+    execute as @e[type=marker,tag=goob.enchantments.definitions.vein_mine.break_detector] at @s run function ~/../listen_for_break
+    execute if entity @e[type=marker,tag=goob.enchantments.definitions.vein_mine.break_detector] run schedule function ~/ 1t replace
+
+function ~/listen_for_break:
+    scoreboard players add @s goob.enchantments.definitions.vein_mine.age 1
+    execute if block ~ ~ ~ #air:
+        tag @s remove goob.enchantments.definitions.vein_mine.break_detector
+        function ~/../propagate
+        schedule function ~/../propagate_loop 1t replace
+        execute
+            as @a[distance=..20]
+            if items entity @s weapon.mainhand *[enchantments~[{enchantments: "goob:enchantments/definitions/vein_mine", levels:1}]]
+            run item replace entity @s armor.body with minecraft:wolf_armor[minecraft:enchantments={"goob:enchantments/apply_exhaustion":15},minecraft:equippable={slot:"body",equip_sound:"intentionally_empty"}]
+    execute if score @s goob.enchantments.definitions.vein_mine.age matches 60.. run kill @s
+
+function ~/propagate_loop:
+    execute as @e[type=marker,tag=goob.enchantments.definitions.vein_mine.current] at @s run function ~/../propagate
+    execute if entity @e[type=marker,tag=goob.enchantments.definitions.vein_mine.current] run schedule function ~/ 1t replace
+
+function ~/propagate:
+    tag @s remove goob.enchantments.definitions.vein_mine.current
+
+    execute 
+        positioned ~1 ~ ~ 
+        if block ~ ~ ~ #goob:enchantments/definitions/vein_mine/group 
+        unless entity @n[type=marker, tag=goob.enchantments.definitions.vein_mine, distance=..0.9]
+        run function ~/../summon_breaker
+    execute 
+        positioned ~-1 ~ ~ 
+        if block ~ ~ ~ #goob:enchantments/definitions/vein_mine/group 
+        unless entity @n[type=marker, tag=goob.enchantments.definitions.vein_mine, distance=..0.9]
+        run function ~/../summon_breaker
+    execute 
+        positioned ~ ~1 ~ 
+        if block ~ ~ ~ #goob:enchantments/definitions/vein_mine/group 
+        unless entity @n[type=marker, tag=goob.enchantments.definitions.vein_mine, distance=..0.9]
+        run function ~/../summon_breaker
+    execute 
+        positioned ~ ~-1 ~ 
+        if block ~ ~ ~ #goob:enchantments/definitions/vein_mine/group 
+        unless entity @n[type=marker, tag=goob.enchantments.definitions.vein_mine, distance=..0.9]
+        run function ~/../summon_breaker
+    execute 
+        positioned ~ ~ ~1
+        if block ~ ~ ~ #goob:enchantments/definitions/vein_mine/group 
+        unless entity @n[type=marker, tag=goob.enchantments.definitions.vein_mine, distance=..0.9]
+        run function ~/../summon_breaker
+    execute 
+        positioned ~ ~ ~-1
+        if block ~ ~ ~ #goob:enchantments/definitions/vein_mine/group 
+        unless entity @n[type=marker, tag=goob.enchantments.definitions.vein_mine, distance=..0.9]
+        run function ~/../summon_breaker
+
+    kill @s
+
+function ~/summon_breaker:
+    summon marker ~ ~ ~ {Tags:["goob.enchantments.definitions.vein_mine","goob.enchantments.definitions.vein_mine.current","goob.enchantments.definitions.vein_mine.current.temp"]}
+    scoreboard players operation 
+        @n[type=marker,tag=goob.enchantments.definitions.vein_mine.current.temp] goob.id
+        =
+        @s goob.id
+    scoreboard players operation 
+        @n[type=marker,tag=goob.enchantments.definitions.vein_mine.current.temp] goob.enchantments.definitions.vein_mine.depth
+        =
+        @s goob.enchantments.definitions.vein_mine.depth
+    scoreboard players add @n[type=marker,tag=goob.enchantments.definitions.vein_mine.current.temp] goob.enchantments.definitions.vein_mine.depth 1
+    execute 
+        as @e[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool]
+        if score @s goob.id = @n[type=marker,tag=goob.enchantments.definitions.vein_mine.current.temp] goob.id
+        run loot spawn ~ ~ ~ mine ~ ~ ~ mainhand
+    setblock ~ ~ ~ air
+    execute as @n[type=marker,tag=goob.enchantments.definitions.vein_mine.current.temp] if score @s goob.enchantments.definitions.vein_mine.depth matches 30.. run return run kill @s
+    tag @n[type=marker,tag=goob.enchantments.definitions.vein_mine.current.temp] remove goob.enchantments.definitions.vein_mine.current.temp
+
+function ~/tool_loop:
+    execute as @e[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool.alive]:
+        tag @s add goob.enchantments.definitions.vein_mine.tool.temp
+        tag @s remove goob.enchantments.definitions.vein_mine.tool.alive
+        execute 
+            as @e[type=marker,tag=goob.enchantments.definitions.vein_mine]
+            if score @s goob.id = @n[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool.temp] goob.id
+            run tag @n[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool.temp] add goob.enchantments.definitions.vein_mine.tool.alive
+        tag @s remove goob.enchantments.definitions.vein_mine.tool.temp
+    execute 
+        as @e[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool,tag=!goob.enchantments.definitions.vein_mine.tool.alive] 
+        run kill @s
+    execute if entity @e[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool] schedule function ~/ 10t replace 
+
+function ~/summon_break_detector:
+    execute if entity @n[type=marker,tag=goob.enchantments.definitions.vein_mine.break_detector,distance=..1] run return fail
+    execute summon marker:
+        tag @s add goob.enchantments.definitions.vein_mine.break_detector
+        tag @s add goob.enchantments.definitions.vein_mine.break_detector.temp
+        tag @s add goob.enchantments.definitions.vein_mine
+        function goob:main/assign_id
+        scoreboard players set @s goob.enchantments.definitions.vein_mine.age 0
+    summon armor_stand ~ ~ ~ {
+        Tags: ["goob.enchantments.definitions.vein_mine.tool","goob.enchantments.definitions.vein_mine.tool.temp", "goob.enchantments.definitions.vein_mine.tool.alive"],
+        ShowArms: true,
+        Marker: true,
+        Invisible: true
+    }
+    item replace entity @n[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool.temp] contents from entity @s weapon.mainhand
+    scoreboard players operation 
+        @n[type=marker,tag=goob.enchantments.definitions.vein_mine.break_detector.temp] goob.id
+        =
+        @n[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool.temp] goob.id
+    tag @n[type=marker,tag=goob.enchantments.definitions.vein_mine.break_detector.temp] remove goob.enchantments.definitions.vein_mine.break_detector.temp
+    tag @n[type=armor_stand,tag=goob.enchantments.definitions.vein_mine.tool.temp] remove goob.enchantments.definitions.vein_mine.tool.temp
+
+    schedule function ~/../listen_for_break_loop 1t replace
+    schedule function ~/../tool_loop 1t replace

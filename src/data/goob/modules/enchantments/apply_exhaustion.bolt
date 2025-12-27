@@ -1,0 +1,40 @@
+enchantment ~/ {
+    "description": "",
+    "supported_items": "wolf_armor",
+    "max_level": 20,
+    "slots": ["body"],
+    "min_cost": {
+        "base": 9999,
+        "per_level_above_first": 9999
+    },
+    "max_cost": {
+        "base": 9999,
+        "per_level_above_first": 9999
+    },
+    "anvil_cost": 9999,
+    "weight": 1,
+    "effects": {
+        "minecraft:tick": [{
+            "effect": {
+                "type": "minecraft:all_of",
+                "effects": [
+                    {
+                        "type": "minecraft:apply_exhaustion",
+                        "amount": {
+                            "type": "minecraft:linear",
+                            "base": 1,
+                            "per_level_above_first": 1
+                        }
+                    },
+                    {
+                        "type": "minecraft:run_function",
+                        "function": "goob:enchantments/apply_exhaustion/clear"
+                    }
+                ]
+            }
+        }]
+    }
+}
+
+function ~/clear:
+    item replace entity @s armor.body with air

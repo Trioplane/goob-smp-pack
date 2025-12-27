@@ -10,5 +10,6 @@
     "subtitles.entity.chicken.ambient": "Borb clucks",
     "subtitles.entity.chicken.death": "Borb dies",
     "subtitles.entity.chicken.egg": "Borb plops",
-    "subtitles.entity.chicken.hurt": "Borb hurts"
+    "subtitles.entity.chicken.hurt": "Borb hurts",
+    "goob.enchantments.vein_mine": "Vein Mine"
 }   

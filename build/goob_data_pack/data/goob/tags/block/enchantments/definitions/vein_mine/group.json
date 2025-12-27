@@ -1,0 +1,22 @@
+{
+  "values": [
+    "#logs",
+    "#leaves",
+    "nether_wart_block",
+    "warped_wart_block",
+    "#coal_ores",
+    "#copper_ores",
+    "#iron_ores",
+    "#gold_ores",
+    "#lapis_ores",
+    "#diamond_ores",
+    "#emerald_ores",
+    "#redstone_ores",
+    "nether_quartz_ore",
+    "raw_copper_block",
+    "raw_iron_block",
+    "raw_gold_block",
+    "ancient_debris",
+    "amethyst_block"
+  ]
+}

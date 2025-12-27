@@ -1,0 +1,36 @@
+{
+  "description": {
+    "translate": "goob.enchantments.aerodynamic",
+    "color": "light_purple"
+  },
+  "supported_items": "#minecraft:harnesses",
+  "primary_items": "#minecraft:harnesses",
+  "max_level": 10,
+  "slots": [
+    "body"
+  ],
+  "min_cost": {
+    "base": 20,
+    "per_level_above_first": 5
+  },
+  "max_cost": {
+    "base": 45,
+    "per_level_above_first": 7
+  },
+  "anvil_cost": 20,
+  "weight": 2,
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "attribute": "minecraft:flying_speed",
+        "amount": {
+          "type": "linear",
+          "base": 0.005,
+          "per_level_above_first": 0.005
+        },
+        "operation": "add_value",
+        "id": "goob:enchantments/definitions/aerodynamic"
+      }
+    ]
+  }
+}
