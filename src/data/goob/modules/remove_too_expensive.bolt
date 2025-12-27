@@ -1,0 +1,10 @@
+function ~/loop:
+    item modify entity @a weapon.offhand ~/../
+    schedule function ~/../loop 10s replace
+
+item_modifier ~/ {
+    "function": "minecraft:set_components",
+    "components": {
+        "!minecraft:repair_cost": {}
+    }
+}
