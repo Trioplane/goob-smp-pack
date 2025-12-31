@@ -26,6 +26,10 @@
     "subtitles.entity.cod.death": "Fisch dies",
     "subtitles.entity.cod.flop": "Fisch flops",
     "subtitles.entity.cod.hurt": "Fisch hurts",
+    "block.minecraft.potatoes": "Potats",
+    "item.minecraft.baked_potato": "Baked Potat",
+    "item.minecraft.poisonous_potato": "Poisonous Potat",
+    "item.minecraft.potato": "Potat",
     "goob.enchantments.vein_mine": "Vein Mine",
     "goob.enchantments.aerodynamic": "Aerodynamic"
 }   
