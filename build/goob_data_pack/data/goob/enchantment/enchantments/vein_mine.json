@@ -4,8 +4,8 @@
     "color": "light_purple"
   },
   "exclusive_set": "minecraft:fortune",
-  "supported_items": "#goob:enchantments/definitions/vein_mine/enchantable",
-  "primary_items": "#goob:enchantments/definitions/vein_mine/enchantable",
+  "supported_items": "#goob:enchantments/vein_mine/enchantable",
+  "primary_items": "#goob:enchantments/vein_mine/enchantable",
   "weight": 1,
   "max_level": 1,
   "min_cost": {
@@ -28,7 +28,7 @@
           "effects": [
             {
               "type": "minecraft:run_function",
-              "function": "goob:enchantments/definitions/vein_mine/summon_break_detector"
+              "function": "goob:enchantments/vein_mine/summon_break_detector"
             }
           ]
         },
@@ -62,7 +62,7 @@
               "condition": "minecraft:location_check",
               "predicate": {
                 "block": {
-                  "blocks": "#goob:enchantments/definitions/vein_mine/mineable"
+                  "blocks": "#goob:enchantments/vein_mine/mineable"
                 }
               }
             }

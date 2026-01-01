@@ -1,0 +1,14 @@
+{
+  "values": [
+    "command_block",
+    "chain_command_block",
+    "repeating_command_block",
+    "jigsaw",
+    "structure_block",
+    "structure_void",
+    "barrier",
+    "test_instance_block",
+    "test_block",
+    "light"
+  ]
+}

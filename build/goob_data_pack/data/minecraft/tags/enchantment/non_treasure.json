@@ -1,6 +1,6 @@
 {
   "values": [
-    "goob:enchantments/definitions/vein_mine",
-    "goob:enchantments/definitions/aerodynamic"
+    "goob:enchantments/vein_mine",
+    "goob:enchantments/aerodynamic"
   ]
 }

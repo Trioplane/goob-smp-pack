@@ -26,10 +26,10 @@
         "amount": {
           "type": "linear",
           "base": 0.005,
-          "per_level_above_first": 0.005
+          "per_level_above_first": 0.0065
         },
         "operation": "add_value",
-        "id": "goob:enchantments/definitions/aerodynamic"
+        "id": "goob:enchantments/aerodynamic"
       }
     ]
   }

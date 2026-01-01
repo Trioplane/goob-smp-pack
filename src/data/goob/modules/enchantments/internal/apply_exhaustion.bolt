@@ -28,7 +28,7 @@ enchantment ~/ {
                     },
                     {
                         "type": "minecraft:run_function",
-                        "function": "goob:enchantments/apply_exhaustion/clear"
+                        "function": "goob:enchantments/internal/apply_exhaustion/clear"
                     }
                 ]
             }

@@ -1,0 +1,25 @@
+block_tag ~/operator {
+    "values": [
+        "command_block",
+        "chain_command_block",
+        "repeating_command_block",
+        "jigsaw",
+        "structure_block",
+        "structure_void",
+        "barrier",
+        "test_instance_block",
+        "test_block",
+        "light",
+    ]
+}
+
+block_tag ~/indestructible {
+    "values": [
+        "#goob:util/tags/operator",
+        "bedrock",
+        "end_portal_frame",
+        "nether_portal",
+        "end_portal",
+        "moving_piston",
+    ]
+}

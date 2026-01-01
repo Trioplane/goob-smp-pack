@@ -1,10 +1,11 @@
 function ~/init:
-    function ~/../../definitions/vein_mine/init
+    function ~/../../vein_mine/init
+    function ~/../../destruction/init
     
 append enchantment_tag minecraft:non_treasure {
     "replace": false,
     "values": [
-        "goob:enchantments/definitions/vein_mine",
-        "goob:enchantments/definitions/aerodynamic",
+        "goob:enchantments/vein_mine",
+        "goob:enchantments/aerodynamic",
     ]
 }

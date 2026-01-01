@@ -1,0 +1,157 @@
+enchantment ~/ {
+    "description": {
+        "translate": "goob.enchantments.destruction",
+        "color": "light_purple"
+    },
+    "supported_items": "#minecraft:pickaxes",
+    "primary_items": "#minecraft:pickaxes",
+    "max_level": 1,
+    "slots": [
+        "mainhand"
+    ],
+    "min_cost": {
+        "base": 12,
+        "per_level_above_first": 8
+    },
+    "max_cost": {
+        "base": 40,
+        "per_level_above_first": 8
+    },
+    "anvil_cost": 8,
+    "weight": 1,
+    "effects": {
+        "minecraft:hit_block": [
+            {
+                "effect": {
+                    "type": "minecraft:all_of",
+                    "effects": [
+                        {
+                            "type": "minecraft:run_function",
+                            "function": "goob:enchantments/destruction/try_break"
+                        },
+                        {
+                            "type": "minecraft:change_item_damage",
+                            "amount": 9999999
+                        },
+                        {
+                            "type": "minecraft:apply_exhaustion",
+                            "amount": 15
+                        },
+                        {
+                            "type": "minecraft:explode",
+                            "attribute_to_user": true,
+                            "damage_type": "minecraft:player_explosion",
+                            "immune_blocks": "#goob:util/tags/indestructible",
+                            "knockback_multiplier": 5,
+                            "radius": 2,
+                            "create_fire": true,
+                            "block_interaction": "tnt",
+                            "small_particle": {
+                                "type": "minecraft:poof"
+                            },
+                            "large_particle": {
+                                "type": "minecraft:campfire_signal_smoke"
+                            },
+                            "block_particles": [
+                                {
+                                    "weight": 1,
+                                    "particle": {
+                                        "type": "minecraft:ash"
+                                    }
+                                }
+                            ],
+                            "sound": "minecraft:entity.wither.break_block"
+                        },
+                        {
+                            "type": "minecraft:apply_mob_effect",
+                            "to_apply": "minecraft:slowness",
+                            "min_duration": 3,
+                            "max_duration": 6,
+                            "min_amplifier": 2,
+                            "max_amplifier": 4
+                        },
+                        {
+                            "type": "minecraft:apply_impulse",
+                            "direction": [
+                                0,
+                                1,
+                                -0.2
+                            ],
+                            "coordinate_scale": [
+                                0.01,
+                                1,
+                                0.01
+                            ],
+                            "magnitude": 1
+                        }
+                    ]
+                },
+                "requirements": {
+                    "condition": "minecraft:inverted",
+                    "term": {
+                        "condition": "minecraft:location_check",
+                        "predicate": {
+                            "block": {
+                                "blocks": "#goob:util/tags/operator"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
+
+function ~/init:
+    scoreboard objectives add goob.enchantments.destruction.rolled_number dummy
+
+function ~/try_break:
+    execute 
+        if items entity @s weapon.mainhand wooden_pickaxe
+        store result score @s goob.enchantments.destruction.rolled_number
+        run random value 1..15
+
+    execute 
+        if items entity @s weapon.mainhand stone_pickaxe
+        store result score @s goob.enchantments.destruction.rolled_number
+        run random value 1..12
+
+    execute 
+        if items entity @s weapon.mainhand copper_pickaxe
+        store result score @s goob.enchantments.destruction.rolled_number
+        run random value 1..10
+
+    execute 
+        if items entity @s weapon.mainhand iron_pickaxe
+        store result score @s goob.enchantments.destruction.rolled_number
+        run random value 1..8
+
+    execute 
+        if items entity @s weapon.mainhand golden_pickaxe
+        store result score @s goob.enchantments.destruction.rolled_number
+        run random value 1..20
+
+    execute 
+        if items entity @s weapon.mainhand diamond_pickaxe
+        store result score @s goob.enchantments.destruction.rolled_number
+        run random value 1..3
+
+    execute 
+        if items entity @s weapon.mainhand netherite_pickaxe
+        store result score @s goob.enchantments.destruction.rolled_number
+        run random value 1..2
+
+    execute if score @s goob.enchantments.destruction.rolled_number matches 1 run return run function ~/../success_break
+
+    function ~/../fail_break
+
+function ~/fail_break:
+    particle minecraft:trial_spawner_detection ~ ~ ~ 0.3 0.3 0.3 0.8 30
+    playsound minecraft:block.beacon.deactivate block @a ~ ~ ~ 2 0.8
+
+function ~/success_break:
+    particle minecraft:trial_spawner_detection_ominous ~ ~ ~ 0.3 0.3 0.3 0.8 30
+    playsound minecraft:block.beacon.power_select block @a ~ ~ ~ 1 0.5
+    playsound minecraft:entity.warden.roar block @a ~ ~ ~ 1 2
+    playsound minecraft:entity.warden.sonic_boom block @a ~ ~ ~ 0.3 2
+    setblock ~ ~ ~ air destroy
